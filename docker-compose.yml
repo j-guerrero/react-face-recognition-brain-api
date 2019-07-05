@@ -1,0 +1,21 @@
+version: '3.7'
+
+services: 
+
+    # Backend API
+    backend-api:
+        container_name: backend
+        image: carbon
+        build: ./
+        command: npm start
+        working_dir: /usr/src/react-face-recognition-brain-api
+        ports: 
+            - "3000:3000"
+        volumes:
+            - ./:/usr/src/react-face-recognition-brain-api
+
+    # Postgres
+    postgres:
+        image: postgres
+        ports:
+            - "5432:5432"
