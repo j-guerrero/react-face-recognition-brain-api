@@ -2,20 +2,28 @@ version: '3.7'
 
 services: 
 
+    # Postgres
+    postgres:
+        environment:
+            POSTGRES_USER: guerrero
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: smart-brain-docker
+            POSTGRES_HOST: postgres
+        build: ./postgres
+        ports:
+            - "5432:5432"
+
     # Backend API
-    backend-api:
+    smart-brain-api:
         container_name: backend
         image: carbon
         build: ./
         command: npm start
         working_dir: /usr/src/react-face-recognition-brain-api
+        environment:
+            POSTGRES_URI: postgres://guerrero:secret@postgres:5432/smart-brain-docker
         ports: 
             - "3000:3000"
         volumes:
             - ./:/usr/src/react-face-recognition-brain-api
 
-    # Postgres
-    postgres:
-        image: postgres
-        ports:
-            - "5432:5432"
