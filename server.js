@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
+const morgan = require('morgan');
 
 const register = require('./controllers/register.js');
 const signin = require('./controllers/signin.js');
@@ -21,23 +22,21 @@ const db = knex({
   
 });
 
-// db.select('*').from('users').then(data => {
-// 	console.log(data);
-// });
-
-
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(morgan('combined'));
 
 app.get('/', (req,res) => { res.send('Server Online') })
 
-app.post('/signin', signin.handleSignin(db,bcrypt));
+app.post('/signin', signin.signInAuthentication(db,bcrypt));
 
 app.post('/register', register.handleRegister(db,bcrypt));
 
 app.get('/profile/:id', profile.handleProfileGet(db));
+
+app.post('/profile/:id', profile.handleProfileUpdate(db));
 
 app.put('/image', image.handleImage(db));
 

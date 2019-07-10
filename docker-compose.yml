@@ -10,8 +10,16 @@ services:
             POSTGRES_DB: smart-brain-docker
             POSTGRES_HOST: postgres
         build: ./postgres
+        container_name: postgres
         ports:
             - "5432:5432"
+
+    # Redis
+    redis:
+        image: redis
+        container_name: redis
+        ports:
+            - "6379:6379"
 
     # Backend API
     smart-brain-api:
@@ -22,6 +30,11 @@ services:
         working_dir: /usr/src/react-face-recognition-brain-api
         environment:
             POSTGRES_URI: postgres://guerrero:secret@postgres:5432/smart-brain-docker
+            REDIS_URI: redis://redis:6379
+            JWT_SECRET: secret
+        links:
+            - postgres
+            - redis
         ports: 
             - "3000:3000"
         volumes:
