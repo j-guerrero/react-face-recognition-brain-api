@@ -9,12 +9,14 @@ const register = require('./controllers/register.js');
 const signin = require('./controllers/signin.js');
 const profile = require('./controllers/profile.js');
 const image = require('./controllers/image.js');
+const auth = require('./controllers/authorization.js')
 
 const db = knex({
   client: 'pg',
 
   connection: process.env.POSTGRES_URI
 
+  // !--- for non-Docker build ---!
   // connection: {
   //   connectionString : process.env.DATABASE_URL,
   //   ssl: true,
@@ -34,13 +36,13 @@ app.post('/signin', signin.signInAuthentication(db,bcrypt));
 
 app.post('/register', register.handleRegister(db,bcrypt));
 
-app.get('/profile/:id', profile.handleProfileGet(db));
+app.get('/profile/:id', auth.requireAuth, profile.handleProfileGet(db));
 
-app.post('/profile/:id', profile.handleProfileUpdate(db));
+app.post('/profile/:id', auth.requireAuth, profile.handleProfileUpdate(db));
 
-app.put('/image', image.handleImage(db));
+app.put('/image', auth.requireAuth, image.handleImage(db));
 
-app.post('/imageurl', image.handleApiCall);
+app.post('/imageurl', auth.requireAuth, image.handleApiCall);
 
 app.listen(process.env.PORT || 3000, ()=>{
 
