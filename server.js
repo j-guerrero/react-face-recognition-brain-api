@@ -14,13 +14,7 @@ const auth = require('./controllers/authorization.js')
 const db = knex({
   client: 'pg',
 
-  connection: process.env.POSTGRES_URI
-
-  // !--- for non-Docker build ---!
-  // connection: {
-  //   connectionString : process.env.DATABASE_URL,
-  //   ssl: true,
-  // }
+  connection: process.env.DATABASE_URL
   
 });
 
