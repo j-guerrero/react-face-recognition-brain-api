@@ -5,3 +5,11 @@ Runs back-end Node.js server that connects with a PostgreSQL server for login au
 NodeJS server w/ Postgres + Redis hosted on Heroku. 
 
 Optional Docker support. Postgres and Redis URL will need to be changed in file in order for it to be functional.
+
+## Installation
+```>npm run install```
+
+Download and run associated front-end (https://github.com/j-guerrero/react-face-recognition-brain)
+
+## Running
+```>npm run start```. Launches Nodemon environment to localhost:3000 by default
