@@ -14,7 +14,7 @@ const profile = require('./controllers/profile.js');
 const image = require('./controllers/image.js');
 const auth = require('./controllers/authorization.js')
 
-// Postgrest 'DATABASE_URL' provided when running on Heroku platform
+// Postgres 'DATABASE_URL' provided when running on Heroku platform
 const db = knex({
   client: 'pg',
 
