@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
 
+// 'REDIS_URL' provided by Heroku platform where hosted
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
 const handleSignin = (db,bcrypt,req,res) => {
@@ -26,6 +27,7 @@ const handleSignin = (db,bcrypt,req,res) => {
 		.catch(err => Promise.reject('wrong credentials'))
 }
 
+// Checks JWT token against REDIS DB
 const getAuthTokenId = (req,res) => {
 	const { authorization } = req.headers;
 	return redisClient.get(authorization, (err,reply) => {
@@ -46,6 +48,7 @@ const setToken = (tokenKey, idValue) => {
 	return Promise.resolve(redisClient.set(tokenKey, idValue))
 }
 
+// Creates new JWT token if successful login & no current token
 const createSessions = (user) => {
 	const { email, id } = user;
 	const token = signToken(email);
@@ -56,6 +59,9 @@ const createSessions = (user) => {
 		.catch(console.log)
 }
 
+// Required for requests after login that affect specific user profiles
+// If there is a token, check against REDIS DB
+// Otherwise, create new session token if valid login
 const signInAuthentication = (db, bcrypt) => (req,res) => {
 	const { authorization } = req.headers;
 	return authorization ? getAuthTokenId(req,res) : 
