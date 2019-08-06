@@ -12,6 +12,7 @@ const handleProfileGet = (db) => (req,res) => {
 	.catch(err => res.status(400).json('Error retrieving user'))
 }
 
+// Updates info in Postgres "users" table
 const handleProfileUpdate = (db) => (req,res) => {
 
 	const { id } = req.params;
